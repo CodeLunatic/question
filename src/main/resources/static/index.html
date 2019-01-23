@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <meta content="" name="description">
+    <meta content="" name="author">
+    <link href="img/favicon.ico" rel="shortcut icon">
+    <base href="">
+    <title>刷题吧</title>
+    <!--导入jQuery-->
+    <script src="js/plugins/jQuery/jquery-1.9.0.min.js" type="text/javascript"></script>
+    <!-- Bootstrap core CSS -->
+    <link href="css/homePage/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="css/homePage/pricing.css" rel="stylesheet">
+    <style type="text/css">
+        * {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        a:hover {
+            color: red !important;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<!--刷题吧头部信息-->
+<div class="align-items-center p-4 px-md-4 mb-3 bg-white border-bottom box-shadow">
+    <img alt="Logo" src="img/logo.png" style="width: 3.0rem; vertical-align: text-bottom;">
+    <span class="h3 ml-2" style="position: relative; top: -0.5rem;">刷题吧
+        <small class="text-muted ml-2" style="font-size: 14px;">个人版</small>
+    </span>
+    <button class="md-trigger btn btn-outline-primary" onclick="window.open('html/scoreList.html', '_blank')"
+            style="float: right;position: absolute; top: 1.6rem; right: 1.8rem;"
+            type="button">
+        我的成绩
+    </button>
+    <button class="btn btn-outline-primary" onclick="window.location.href = 'templates/试题模板.xlsx'"
+            style="float: right;position: absolute; top: 1.6rem; right: 8rem;">
+        下载模板
+    </button>
+</div>
+
+<!--提示信息-->
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center" style="margin-top: -2%;">
+    <h1 class="display-4" style="font-size: 3.6rem;">不忘初心，方得始终</h1>
+    <p class="lead">你可以在这里发现每天都学了些什么，进行私人订制的查漏补缺</p>
+</div>
+
+<div class="container">
+    <!--三个盒子-->
+    <div class="card-deck mb-3 text-center">
+        <!--盒子-->
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">查看试题</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title pricing-card-title">30分钟
+                    <small class="text-muted">/ 天</small>
+                </h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                    <li>你可以在这里做考前复习</li>
+                    <li>自定义的考试题库</li>
+                    <li>Excel文件放到程序目录下的</li>
+                    <li>"题库"文件夹中即可开始使用</li>
+                </ul>
+                <button class="btn btn-lg btn-block btn-primary"
+                        onclick="window.location.href='html/choiceFile.html#?whatToDo=lookAtQuestion'"
+                        type="button">开始看题
+                </button>
+            </div>
+        </div>
+        <!--盒子-->
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">在线测试</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title pricing-card-title">20分钟
+                    <small class="text-muted">/ 天</small>
+                </h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                    <li>传统的选择题形式</li>
+                    <li>系统自动阅卷</li>
+                    <li>错题会记录在你的错题本</li>
+                    <li>在这里了解自己吧</li>
+                </ul>
+                <button class="btn btn-lg btn-block btn-outline-primary"
+                        onclick="window.location.href='html/choiceFile.html#?whatToDo=doExercise'"
+                        type="button">开始刷题
+                </button>
+            </div>
+        </div>
+        <!--盒子-->
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">错题巩固</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title pricing-card-title">10分钟
+                    <small class="text-muted">/ 天</small>
+                </h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                    <li>错题查看</li>
+                    <li>你的私人错题本</li>
+                    <li>掌握后即可删除</li>
+                    <li>强化你学到的知识</li>
+                </ul>
+                <button class="btn btn-lg btn-block btn-primary"
+                        onclick="window.open('html/toViewExamPaper.html#?whatToDo=lookAtMyWrongTopic', '_blank')"
+                        type="button">查看错题本
+                </button>
+            </div>
+        </div>
+    </div>
+    <!--脚部-->
+    <p class="text-center border-top pt-4">
+        <a class="text-muted" href="https://github.com/CodeLunatic/question" target="_blank">&copy; 开源项目，欢迎指导</a>
+    </p>
+</div>
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="css/homePage/popper.min.js"></script>
+<script src="css/homePage/bootstrap.min.js"></script>
+<script src="css/homePage/holder.min.js"></script>
+<script>
+    Holder.addTheme('thumb', {
+        bg: '#55595c',
+        fg: '#eceeef',
+        text: 'Thumbnail'
+    });
+</script>
+
+
+</body>
+<script type="text/javascript">
+    /* 禁用F12 */
+    document.onkeydown = function () {
+        if (window.event && window.event.keyCode === 123) {
+            window.event.returnValue = false;
+        }
+    };
+
+    /* 禁用右键菜单 */
+    document.oncontextmenu = function () {
+        return false;
+    };
+</script>
+</html>

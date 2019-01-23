@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+    <!--exam server-->
+
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <meta content="no-cache" http-equiv="pragma">
+    <meta content="no-cache, must-revalidate" http-equiv="Cache-Control">
+    <meta content="0" http-equiv="expires">
+    <link href="../img/favicon.ico" rel="shortcut icon">
+    <link href="../css/plugins/BootStrap/bootstrap-huan.css" rel="stylesheet">
+    <link href="../css/font/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/index/style.css" rel="stylesheet">
+    <link href="../css/plugins/Animated/beyond.min.css" rel="stylesheet">
+    <link href="../css/index/exam.css" rel="stylesheet">
+    <style>
+        [ng-cloak] {
+            display: none;
+        }
+    </style>
+    <script src="../js/plugins/angularJS/angular.min.js"></script>
+    <script src="../js/base.js"></script>
+    <script src="../js/service/examPaperService.js"></script>
+    <script src="../js/controller/baseController.js"></script>
+    <script src="../js/controller/examPaperController.js"></script>
+    <title>查看试题</title>
+    <style>
+        pre {
+            border: 0px;
+            font-size: 20px;
+            font-family: Consolas;
+        }
+
+        #add-more-qt-to-paper i {
+            color: #47a447;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .question-point {
+            padding: 0 8px;
+            margin: 0 2px;
+            border-bottom: 1px solid;
+            /* 	cursor: pointer; */
+        }
+
+        select {
+            width: 120px
+        }
+
+        .mytitle, .fa-align-justify {
+            font-size: 15px;
+        }
+
+        .rememberThisQuestion {
+            background: #427fed;
+            border: none;
+            border-radius: 4px;
+            width: 100px;
+            height: 30px;
+            color: #fff;
+            line-height: 30px;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body ng-app="app" ng-controller="examPaperController" ng-init="initPage()" style="zoom: 1; font-family: Consolas;">
+<div id="main" ng-cloak ng-if="topicCount > 0">
+    <div class="well with-header with-footer">
+        <div class="header bordered-themeprimary bg1">
+            <i class="fa fa-pencil mytitle"> 愿优秀的你不辜负每天的自己</i>
+            <button class="btn btn-primary btn-xs" onclick="window.close();" style="float: right;" type="button">
+                <i class="fa fa-undo"></i>关闭
+            </button>
+        </div>
+
+        <div class="widget-body ">
+            <div>
+                <div>
+                    <h1>
+                        <i class="fa fa-align-justify"> 不忘初心，方得始终</i>
+                    </h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <table class="table table-bordered  table-striped">
+                        <tbody>
+                        <tr>
+                            <td>
+                                <form id="saveForm" method="post" name="saveForm">
+                                    <div class="def-bk" id="bk-exampaper">
+                                        <div class="expand-bk-content" id="bk-conent-exampaper">
+                                            <div id="exampaper-header">
+                                                <div id="exampaper-desc-container">
+                                                    <!--题目类型过滤器-->
+                                                    <div class="exampaper-filter" id="exampaper-desc">
+                                                        <span class="exampaper-filter-item efi-qt-all efi-selected">全部[<span
+                                                                class="efi-tno">{{topicCount}}</span>]<span
+                                                                class="efi-qcode"
+                                                                style="display:none;">qt-all</span></span>
+                                                        <span class="exampaper-filter-item efi-qt-singlechoice"
+                                                              ng-if="singleChoiceList.length > 0">单选题[<span
+                                                                class="efi-tno">{{singleChoiceList.length}}</span>]<span
+                                                                class="efi-qcode"
+                                                                style="display:none;">qt-singlechoice</span></span>
+                                                        <span class="exampaper-filter-item efi-qt-multiplechoice"
+                                                              ng-if="multipleChoiceList.length > 0">多选题[<span
+                                                                class="efi-tno">{{multipleChoiceList.length}}</span>]<span
+                                                                class="efi-qcode" style="display:none;">qt-multiplechoice</span></span>
+                                                        <span class="exampaper-filter-item efi-qt-trueorfalse"
+                                                              ng-if="trueOrFalseList.length > 0">判断题[<span
+                                                                class="efi-tno">{{trueOrFalseList.length}}</span>]<span
+                                                                class="efi-qcode"
+                                                                style="display:none;">qt-trueorfalse</span></span>
+                                                        <span class="exampaper-filter-item efi-qt-fillblank"
+                                                              ng-if="fillBlankList.length > 0">填空题[<span
+                                                                class="efi-tno">{{fillBlankList.length}}</span>]<span
+                                                                class="efi-qcode"
+                                                                style="display:none;">qt-fillblank</span></span>
+                                                        <span class="exampaper-filter-item efi-qt-shortanswer"
+                                                              ng-if="shortAnswerList.length > 0">简答题[<span
+                                                                class="efi-tno">{{shortAnswerList.length}}</span>]<span
+                                                                class="efi-qcode"
+                                                                style="display:none;">qt-shortanswer</span></span>
+                                                        <span class="exampaper-filter-item efi-qt-essay"
+                                                              ng-if="essayList.length > 0">论述题[<span
+                                                                class="efi-tno">{{essayList.length}}</span>]<span
+                                                                class="efi-qcode" style="display:none;">qt-essay</span></span>
+                                                        <span class="exampaper-filter-item efi-qt-analytical"
+                                                              ng-if="analyticalList.length > 0">分析题[<span
+                                                                class="efi-tno">{{analyticalList.length}}</span>]<span
+                                                                class="efi-qcode"
+                                                                style="display:none;">qt-analytical</span></span>
+                                                    </div>
+                                                    <div style="margin-top: 5px;">
+                                                        <span>试卷总分：</span>
+                                                        <span id="exampaper-total-point"
+                                                              style="margin-right: 20px;">100</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <ul id="exampaper-body" style="padding: 0px;">
+                                                <!-- 开始加载试卷 -->
+
+                                                <!-- 单选 -->
+                                                <li class="question qt-singlechoice"
+                                                    ng-repeat="singleChoice in singleChoiceList"
+                                                    style="display: list-item;">
+                                                    <div class="question-title">
+                                                        <div class="question-title-icon"></div>
+                                                        <span class="question-no">{{singleChoice.topicOrder}}.</span>
+                                                        <span class="question-type"
+                                                              style="display: none;">singlechoice</span>
+                                                        <span>[单选题]</span>
+                                                        <span class="question-point-content" ng-if="isShowScore">
+                                                            <span>(</span>
+                                                            <span class="question-point">{{topicScore}}</span>
+                                                            <span>分)</span>
+                                                        </span>
+                                                        <span ng-if="singleChoice.knowledgePoint != null && singleChoice.knowledgePoint != ''">【知识点：{{singleChoice.knowledgePoint}}】</span>
+                                                        <span ng-if="singleChoice.topicMaker != null && singleChoice.topicMaker != ''">【出题人：{{singleChoice.topicMaker}}】</span>
+                                                        <input class="rememberThisQuestion"
+                                                               ng-click="deleteWrongTopicById($event, singleChoice.questionId)"
+                                                               ng-if="isDeleteWrongTopic"
+                                                               type="button"
+                                                               value="我已熟记"/>
+                                                        <span class="question-id" style="display: none;">{{singleChoice.questionId}}</span>
+                                                    </div>
+                                                    <div class="question-body">
+                                                        <p class="question-body-text"></p>
+                                                        <pre>{{singleChoice.question}}</pre>
+                                                        <p></p>
+                                                        <ul class="question-opt-list">
+                                                            <li class="question-list-item"
+                                                                ng-if="singleChoice.optionA != null && singleChoice.optionA != ''">
+                                                                <span class="question-li-text">A:{{singleChoice.optionA}}</span>
+                                                            </li>
+                                                            <li class="question-list-item"
+                                                                ng-if="singleChoice.optionB != null && singleChoice.optionB != ''">
+                                                                <span class="question-li-text">B:{{singleChoice.optionB}}</span>
+                                                            </li>
+                                                            <li class="question-list-item"
+                                                                ng-if="singleChoice.optionC != null && singleChoice.optionC != ''">
+                                                                <span class="question-li-text">C:{{singleChoice.optionC}}</span>
+                                                            </li>
+                                                            <li class="question-list-item"
+                                                                ng-if="singleChoice.optionD != null && singleChoice.optionD != ''">
+                                                                <span class="question-li-text">D:{{singleChoice.optionD}}</span>
+                                                            </li>
+                                                            <li class="question-list-item"
+                                                                ng-if="singleChoice.optionE != null && singleChoice.optionE != ''">
+                                                                <span class="question-li-text">E:{{singleChoice.optionE}}</span>
+                                                            </li>
+                                                            <li class="question-list-item"
+                                                                ng-if="singleChoice.optionF != null && singleChoice.optionF != ''">
+                                                                <span class="question-li-text">F:{{singleChoice.optionF}}</span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="answer-desc">
+                                                        <div class="answer-desc-detail">
+                                                            <span>正确答案：</span>
+                                                            <span class="answer_value">{{singleChoice.answer}}</span><br>
+                                                        </div>
+                                                        <div class="answer-desc-detail"
+                                                             ng-if="singleChoice.explain != null && singleChoice.explain != ''">
+                                                            <span>试题解析：</span>
+                                                            <span>{{singleChoice.explain}}</span>
+                                                        </div>
+                                                        <div class="answer-desc-detail"
+                                                             ng-if="singleChoice.myAnswer != null && singleChoice.myAnswer != ''">
+                                                            <span>我的答案：</span>
+                                                            <span style="color: red;">{{singleChoice.myAnswer}}</span><br>
+                                                        </div>
+                                                        <div class="answer-desc-detail"
+                                                             ng-if="singleChoice.from != null && singleChoice.from != '' && !isShowScore">
+                                                            <span>试题来源：</span>
+                                                            <span>{{singleChoice.from}}</span><br>
+                                                        </div>
+                                                        <br>
+                                                    </div>
+                                                </li>
+
+                                                <!-- 多选 -->
+                                                <li class="question qt-multiplechoice"
+                                                    ng-repeat="multipleChoice in multipleChoiceList"
+                                                    style="display: list-item;">
+                                                    <div class="question-title">
+                                                        <div class="question-title-icon"></div>
+                                                        <span class="question-no">{{multipleChoice.topicOrder}}.</span>
+                                                        <span class="question-type" style="display: none;">multiplechoice</span>
+                                                        <span>[多选题]</span>
+                                                        <span class="question-point-content" ng-if="isShowScore">
+                                                            <span>(</span>
+                                                            <span class="question-point">{{topicScore}}</span>
+                                                            <span>分)</span>
+                                                        </span>
+                                                        <span ng-if="multipleChoice.knowledgePoint != null && multipleChoice.knowledgePoint != ''">【知识点：{{multipleChoice.knowledgePoint}}】</span>
+                                                        <span ng-if="multipleChoice.topicMaker != null && multipleChoice.topicMaker != ''">【出题人：{{multipleChoice.topicMaker}}】</span>
+                                                        <input class="rememberThisQuestion"
+                                                               ng-click="deleteWrongTopicById($event, multipleChoice.questionId)"
+                                                               ng-if="isDeleteWrongTopic"
+                                                               type="button"
+                                                               value="我已熟记"/>
+                                                        <span class="question-id" style="display: none;">{{multipleChoice.questionId}}</span>
+                                                    </div>
+                                                    <div class="question-body">
+                                                        <p class="question-body-text"></p>
+                                                        <pre>{{multipleChoice.question}}</pre>
+                                                        <p></p>
+                                                        <ul class="question-opt-list">
+                                                            <li class="question-list-item"
+                                                                ng-if="multipleChoice.optionA != null && multipleChoice.optionA !=''">
+                                                                <span class="question-li-text">A:{{multipleChoice.optionA}}</span>
+                                                            </li>
+                                                            <li class="question-list-item"
+                                                                ng-if="multipleChoice.optionB != null && multipleChoice.optionB !=''">
+                                                                <span class="question-li-text">B:{{multipleChoice.optionB}}</span>
+                                                            </li>
+                                                            <li class="question-list-item"
+                                                                ng-if="multipleChoice.optionC != null && multipleChoice.optionC !=''">
+                                                                <span class="question-li-text">C:{{multipleChoice.optionC}}</span>
+                                                            </li>
+                                                            <li class="question-list-item"
+                                                                ng-if="multipleChoice.optionD != null && multipleChoice.optionD !=''">
+                                                                <span class="question-li-text">D:{{multipleChoice.optionD}}</span>
+                                                            </li>
+                                                            <li class="question-list-item"
+                                                                ng-if="multipleChoice.optionE != null && multipleChoice.optionE !=''">
+                                                                <span class="question-li-text">E:{{multipleChoice.optionE}}</span>
+                                                            </li>
+                                                            <li class="question-list-item"
+                                                                ng-if="multipleChoice.optionF != null && multipleChoice.optionF !=''">
+                                                                <span class="question-li-text">F:{{multipleChoice.optionF}}</span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="answer-desc">
+                                                        <div class="answer-desc-detail">
+                                                            <span>正确答案：</span>
+                                                            <span class="answer_value">{{multipleChoice.answer}}</span><br>
+                                                        </div>
+                                                        <div class="answer-desc-detail"
+                                                             ng-if="multipleChoice.explain != null && multipleChoice.explain != ''">
+                                                            <span>试题解析：</span>
+                                                            <span>{{multipleChoice.explain}}</span>
+                                                        </div>
+                                                        <div class="answer-desc-detail"
+                                                             ng-if="multipleChoice.myAnswer != null && multipleChoice.myAnswer != ''">
+                                                            <span>我的答案：</span>
+                                                            <span style="color: red;">{{multipleChoice.myAnswer}}</span><br>
+                                                        </div>
+                                                        <div class="answer-desc-detail"
+                                                             ng-if="multipleChoice.from != null && multipleChoice.from != '' && !isShowScore">
+                                                            <span>试题来源：</span>
+                                                            <span>{{multipleChoice.from}}</span><br>
+                                                        </div>
+                                                    </div>
+                                                </li>
+
+                                                <!-- 判断 -->
+                                                <li class="question qt-trueorfalse"
+                                                    ng-repeat="trueOrFalse in trueOrFalseList"
+                                                    style="display: list-item;">
+                                                    <div class="question-title">
+                                                        <div class="question-title-icon"></div>
+                                                        <span class="question-no">{{trueOrFalse.topicOrder}}.</span>
+                                                        <span class="question-type"
+                                                              style="display: none;">trueorfalse</span>
+                                                        <span>[判断题]</span>
+                                                        <span class="question-point-content" ng-if="isShowScore">
+                                                            <span>(</span>
+                                                            <span class="question-point">{{topicScore}}</span>
+                                                            <span>分)</span>
+                                                        </span>
+                                                        <span ng-if="trueOrFalse.knowledgePoint != null && trueOrFalse.knowledgePoint != ''">【知识点：{{trueOrFalse.knowledgePoint}}】</span>
+                                                        <span ng-if="trueOrFalse.topicMaker != null && trueOrFalse.topicMaker != ''">【出题人：{{trueOrFalse.topicMaker}}】</span>
+                                                        <input class="rememberThisQuestion"
+                                                               ng-click="deleteWrongTopicById($event, trueOrFalse.questionId)"
+                                                               ng-if="isDeleteWrongTopic"
+                                                               type="button"
+                                                               value="我已熟记"/>
+                                                        <span class="question-id" style="display: none;">{{trueOrFalse.questionId}}</span>
+                                                    </div>
+                                                    <div class="question-body">
+                                                        <p class="question-body-text"></p>
+                                                        <pre>{{trueOrFalse.question}}</pre>
+                                                        <p></p>
+                                                    </div>
+                                                    <div class="answer-desc">
+                                                        <div class="answer-desc-detail">
+                                                            <span>正确答案：</span>
+                                                            <span class="answer_value">{{trueOrFalse.answer}}</span><br>
+                                                        </div>
+                                                        <div class="answer-desc-detail"
+                                                             ng-if="trueOrFalse.explain != null && trueOrFalse.explain != ''">
+                                                            <span>试题解析：</span>
+                                                            <span>{{trueOrFalse.explain}}</span>
+                                                        </div>
+                                                        <div class="answer-desc-detail"
+                                                             ng-if="trueOrFalse.myAnswer != null && trueOrFalse.myAnswer != ''">
+                                                            <span>我的答案：</span>
+                                                            <span style="color: red;">{{trueOrFalse.myAnswer}}</span><br>
+                                                        </div>
+                                                        <div class="answer-desc-detail"
+                                                             ng-if="trueOrFalse.from != null && trueOrFalse.from != '' && !isShowScore">
+                                                            <span>试题来源：</span>
+                                                            <span>{{trueOrFalse.from}}</span><br>
+                                                        </div>
+                                                    </div>
+                                                </li>
+
+                                                <!--填空题-->
+                                                <li class="question qt-fillblank" ng-repeat="fillBlank in fillBlankList"
+                                                    style="display: list-item;">
+                                                    <div class="question-title">
+                                                        <div class="question-title-icon"></div>
+                                                        <span class="question-no">{{fillBlank.topicOrder}}.</span>
+                                                        <span class="question-type"
+                                                              style="display: none;">fillblank</span>
+                                                        <span>[填空题]</span>
+                                                        <span class="question-point-content" ng-if="isShowScore">
+                                                            <span>(</span>
+                                                            <span class="question-point">{{topicScore}}</span>
+                                                            <span>分)</span>
+                                                        </span>
+                                                        <span ng-if="fillBlank.knowledgePoint != null && fillBlank.knowledgePoint != ''">【知识点：{{fillBlank.knowledgePoint}}】</span>
+                                                        <span ng-if="fillBlank.topicMaker != null && fillBlank.topicMaker != ''">【出题人：{{fillBlank.topicMaker}}】</span>
+                                                        <input class="rememberThisQuestion"
+                                                               ng-click="deleteWrongTopicById($event, fillBlank.questionId)"
+                                                               ng-if="isDeleteWrongTopic"
+                                                               type="button"
+                                                               value="我已熟记"/>
+                                                        <span class="question-id" style="display: none;">{{fillBlank.questionId}}</span>
+                                                    </div>
+                                                    <div class="question-body">
+                                                        <p class="question-body-text"></p>
+                                                        <pre>{{fillBlank.question}}</pre>
+                                                        <p></p>
+                                                    </div>
+                                                    <div class="answer-desc">
+                                                        <div class="answer-desc-detail">
+                                                            <span>正确答案：</span>
+                                                            <span class="answer_value">{{fillBlank.answer}}</span><br>
+                                                        </div>
+                                                        <div class="answer-desc-detail"
+                                                             ng-if="fillBlank.explain != null && fillBlank.explain != ''">
+                                                            <span>试题解析：</span>
+                                                            <span>{{fillBlank.explain}}</span>
+                                                        </div>
+                                                        <div class="answer-desc-detail"
+                                                             ng-if="fillBlank.myAnswer != null && fillBlank.myAnswer != ''">
+                                                            <span>我的答案：</span>
+                                                            <span style="color: red;">{{fillBlank.myAnswer}}</span><br>
+                                                        </div>
+                                                        <div class="answer-desc-detail"
+                                                             ng-if="fillBlank.from != null && fillBlank.from != '' && !isShowScore">
+                                                            <span>试题来源：</span>
+                                                            <span>{{fillBlank.from}}</span><br>
+                                                        </div>
+                                                    </div>
+                                                </li>
+
+                                                <!--问答题-->
+                                                <li class="question qt-shortanswer"
+                                                    ng-repeat="shortAnswer in shortAnswerList"
+                                                    style="display: list-item;">
+                                                    <div class="question-title">
+                                                        <div class="question-title-icon"></div>
+                                                        <span class="question-no">{{shortAnswer.topicOrder}}.</span>
+                                                        <span class="question-type"
+                                                              style="display: none;">shortanswer</span>
+                                                        <span>[问答题]</span>
+                                                        <span class="question-point-content" ng-if="isShowScore">
+                                                            <span>(</span>
+                                                            <span class="question-point">{{topicScore}}</span>
+                                                            <span>分)</span>
+                                                        </span>
+                                                        <span ng-if="shortAnswer.knowledgePoint != null && shortAnswer.knowledgePoint != ''">【知识点：{{shortAnswer.knowledgePoint}}】</span>
+                                                        <span ng-if="shortAnswer.topicMaker != null && shortAnswer.topicMaker != ''">【出题人：{{shortAnswer.topicMaker}}】</span>
+                                                        <input class="rememberThisQuestion"
+                                                               ng-click="deleteWrongTopicById($event, shortAnswer.questionId)"
+                                                               ng-if="isDeleteWrongTopic"
+                                                               type="button"
+                                                               value="我已熟记"/>
+                                                        <span class="question-id" style="display: none;">{{shortAnswer.questionId}}</span>
+                                                    </div>
+                                                    <div class="question-body">
+                                                        <p class="question-body-text"></p>
+                                                        <pre>{{shortAnswer.question}}</pre>
+                                                        <p></p>
+                                                    </div>
+                                                    <div class="answer-desc">
+                                                        <div class="answer-desc-detail">
+                                                            <span>正确答案：</span>
+                                                            <span class="answer_value">{{shortAnswer.answer}}</span><br>
+                                                        </div>
+                                                        <div class="answer-desc-detail"
+                                                             ng-if="shortAnswer.explain != null && shortAnswer.explain != ''">
+                                                            <span>试题解析：</span>
+                                                            <span>{{shortAnswer.explain}}</span>
+                                                        </div>
+                                                        <div class="answer-desc-detail"
+                                                             ng-if="shortAnswer.myAnswer != null && shortAnswer.myAnswer != ''">
+                                                            <span>我的答案：</span>
+                                                            <span style="color: red;">{{shortAnswer.myAnswer}}</span><br>
+                                                        </div>
+                                                        <div class="answer-desc-detail"
+                                                             ng-if="shortAnswer.from != null && shortAnswer.from != '' && !isShowScore">
+                                                            <span>试题来源：</span>
+                                                            <span>{{shortAnswer.from}}</span><br>
+                                                        </div>
+                                                    </div>
+                                                </li>
+
+                                                <!--论述题-->
+                                                <li class="question qt-essay" ng-repeat="essay in essayList"
+                                                    style="display: list-item;">
+                                                    <div class="question-title">
+                                                        <div class="question-title-icon"></div>
+                                                        <span class="question-no">{{essay.topicOrder}}.</span>
+                                                        <span class="question-type"
+                                                              style="display: none;">essay</span>
+                                                        <span>[论述题]</span>
+                                                        <span class="question-point-content" ng-if="isShowScore">
+                                                            <span>(</span>
+                                                            <span class="question-point">{{topicScore}}</span>
+                                                            <span>分)</span>
+                                                        </span>
+                                                        <span ng-if="essay.knowledgePoint != null && essay.knowledgePoint != ''">【知识点：{{essay.knowledgePoint}}】</span>
+                                                        <span ng-if="essay.topicMaker != null && essay.topicMaker != ''">【出题人：{{essay.topicMaker}}】</span>
+                                                        <input class="rememberThisQuestion"
+                                                               ng-click="deleteWrongTopicById($event, essay.questionId)"
+                                                               ng-if="isDeleteWrongTopic"
+                                                               type="button"
+                                                               value="我已熟记"/>
+                                                        <span class="question-id" style="display: none;">{{essay.questionId}}</span>
+                                                    </div>
+                                                    <div class="question-body">
+                                                        <p class="question-body-text"></p>
+                                                        <pre>{{essay.question}}</pre>
+                                                        <p></p>
+                                                    </div>
+                                                    <div class="answer-desc">
+                                                        <div class="answer-desc-detail">
+                                                            <span>正确答案：</span>
+                                                            <span class="answer_value">{{essay.answer}}</span><br>
+                                                        </div>
+                                                        <div class="answer-desc-detail"
+                                                             ng-if="essay.explain != null && essay.explain != ''">
+                                                            <span>试题解析：</span>
+                                                            <span>{{essay.explain}}</span>
+                                                        </div>
+                                                        <div class="answer-desc-detail"
+                                                             ng-if="essay.myAnswer != null && essay.myAnswer != ''">
+                                                            <span>我的答案：</span>
+                                                            <span style="color: red;">{{essay.myAnswer}}</span><br>
+                                                        </div>
+                                                        <div class="answer-desc-detail"
+                                                             ng-if="essay.from != null && essay.from != '' && !isShowScore">
+                                                            <span>试题来源：</span>
+                                                            <span>{{essay.from}}</span><br>
+                                                        </div>
+                                                    </div>
+                                                </li>
+
+                                                <!--分析题-->
+                                                <li class="question qt-analytical"
+                                                    ng-repeat="analytical in analyticalList"
+                                                    style="display: list-item;">
+                                                    <div class="question-title">
+                                                        <div class="question-title-icon"></div>
+                                                        <span class="question-no">{{analytical.topicOrder}}.</span>
+                                                        <span class="question-type"
+                                                              style="display: none;">analytical</span>
+                                                        <span>[分析题]</span>
+                                                        <span class="question-point-content" ng-if="isShowScore">
+                                                            <span>(</span>
+                                                            <span class="question-point">{{topicScore}}</span>
+                                                            <span>分)</span>
+                                                        </span>
+                                                        <span ng-if="analytical.knowledgePoint != null && analytical.knowledgePoint != ''">【知识点：{{analytical.knowledgePoint}}】</span>
+                                                        <span ng-if="analytical.topicMaker != null && analytical.topicMaker != ''">【出题人：{{analytical.topicMaker}}】</span>
+                                                        <input class="rememberThisQuestion"
+                                                               ng-click="deleteWrongTopicById($event, analytical.questionId)"
+                                                               ng-if="isDeleteWrongTopic"
+                                                               type="button"
+                                                               value="我已熟记"/>
+                                                        <span class="question-id" style="display: none;">{{analytical.questionId}}</span>
+                                                    </div>
+                                                    <div class="question-body">
+                                                        <p class="question-body-text"></p>
+                                                        <pre>{{analytical.question}}</pre>
+                                                        <p></p>
+                                                    </div>
+                                                    <div class="answer-desc">
+                                                        <div class="answer-desc-detail">
+                                                            <span>正确答案：</span>
+                                                            <span class="answer_value">{{analytical.answer}}</span><br>
+                                                        </div>
+                                                        <div class="answer-desc-detail"
+                                                             ng-if="analytical.explain != null && analytical.explain != ''">
+                                                            <span>试题解析：</span>
+                                                            <span>{{analytical.explain}}</span>
+                                                        </div>
+                                                        <div class="answer-desc-detail"
+                                                             ng-if="analytical.myAnswer != null && analytical.myAnswer != ''">
+                                                            <span>我的答案：</span>
+                                                            <span style="color: red;">{{analytical.myAnswer}}</span><br>
+                                                        </div>
+                                                        <div class="answer-desc-detail"
+                                                             ng-if="analytical.from != null && analytical.from != '' && !isShowScore">
+                                                            <span>试题来源：</span>
+                                                            <span>{{analytical.from}}</span><br>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script src="../js/plugins/jQuery/jquery-1.9.0.min.js" type="text/javascript"></script>
+<script src="../js/index/boot.js" type="text/javascript"></script>
+<script src="../js/utils/aa.js" type="text/javascript"></script>
+<script src="../js/utils/app.js" type="text/javascript"></script>
+<script src="../js/plugins/BootStrap/bootstrap.min.js" type="text/javascript"></script>
+<script src="../js/plugins/jQuery/jquery.sliderBar.js"></script>
+<script type="text/javascript">
+    if (!ch) {
+        alert("请使用谷歌浏览器访问!");
+        window.close();
+    }
+</script>
+
+<script type="text/javascript">
+
+    // 注意，页面中的元素大部分都是页面加载后插入的，所以绑定事件的时候不能像普通的元素那样对待
+    // 下面的这种形式良好的解决了这个问题
+    /*$(document).on('click', 'span', function(event) {
+        alert($(this).text());
+    });*/
+
+    var paper = {};
+    $(function () {
+        examing.initial();
+        var papername = "查看试题";
+        var prefix = papername.substring(0, 6);
+        var name = papername.substring(6, papername.length);
+        $("#name").val(name);
+        $("#name").prev().html(prefix);
+    });
+
+    var examing = {
+
+        initial: function initial() {
+
+            this.bindQuestionFilter();
+            this.bindfocus();
+
+        },
+        /**
+         * 切换考题类型事件
+         */
+        bindQuestionFilter: function bindQuestionFilter() {
+            // 好使
+            $(document).on("click", "span.exampaper-filter-item", function () {
+                var qtype = $(this).find(".efi-qcode").text();
+                examing.doQuestionFilt(qtype);
+            });
+        },
+        /**
+         * 切换到指定的题型
+         */
+        doQuestionFilt: function doQuestionFilt(questiontype) {
+
+            if ($("#exampaper-desc .efi-" + questiontype).hasClass(
+                "efi-selected")) {
+                return false;
+            } else {
+                if (questiontype == 'qt-all') {
+                    var questions = $("li.question");
+                    questions.show();
+                    $(".exampaper-filter-item").removeClass("efi-selected");
+                    $("#exampaper-desc .efi-" + questiontype).addClass(
+                        "efi-selected");
+                } else {
+                    var questions = $("li.question");
+                    questions.hide();
+                    $("#exampaper-body ." + questiontype).show();
+
+                    $(".exampaper-filter-item").removeClass("efi-selected");
+                    $("#exampaper-desc .efi-" + questiontype).addClass(
+                        "efi-selected");
+                }
+            }
+        },
+        questiontypes: [{
+            "name": "全部",
+            "code": "qt-all",
+            "typecode": "-1"
+        }, {
+            "name": "单选题",
+            "code": "qt-singlechoice",
+            "typecode": "1"
+        }, {
+            "name": "多选题",
+            "code": "qt-multiplechoice",
+            "typecode": "2"
+        }, {
+            "name": "判断题",
+            "code": "qt-trueorfalse",
+            "typecode": "0"
+        }, {
+            "name": "填空题(手动判卷)",
+            "code": "qt-fillblank",
+            "typecode": "3"
+        },
+            {
+                "name": "填空题(自动判卷)",
+                "code": "qt-fillblank2",
+                "typecode": "5"
+            }, {
+                "name": "问答题",
+                "code": "qt-shortanswer",
+                "typecode": "4"
+            }, {
+                "name": "论述题",
+                "code": "qt-essay"
+            }, {
+                "name": "分析题",
+                "code": "qt-analytical"
+            }],
+
+        /**
+         * 绑定考题focus事件(点击考题导航)
+         */
+        bindfocus: function bindfocus() {
+            $("#question-navi").on(
+                "click",
+                "a.question-navi-item ",
+                function () {
+                    var clickindex = $("a.question-navi-item").index(this);
+                    var questions = $("li.question");
+                    var targetQuestion = questions[clickindex];
+
+                    var targetQuestionType = $(questions[clickindex]).find(
+                        ".question-type").text();
+
+                    examing.doQuestionFilt("qt-" + targetQuestionType);
+                    // $(targetQuestion).focus();
+
+                    examing.scrollToElement($(targetQuestion));
+                });
+        },
+
+        scrollToElement: function scrollToElement(selector, time,
+                                                  verticalOffset) {
+            time = typeof (time) != 'undefined' ? time : 500;
+            verticalOffset = typeof (verticalOffset) != 'undefined' ? verticalOffset
+                : 0;
+            element = $(selector);
+            offset = element.offset();
+            offsetTop = offset.top + verticalOffset;
+            $('html, body').animate({
+                scrollTop: offsetTop
+            }, time);
+        },
+        /**
+         * 计算总分
+         */
+        refreshTotalPoint: function refreshTotalPoint() {
+            var question_sum_p_all = 0;
+            var point_array = $(".question-point");
+            for (var i = 0; i < point_array.length; i++) {
+                var pointtmp = parseFloat($(point_array[i]).text());
+
+                if (isNaN(pointtmp)) {
+                    continue;
+                } else {
+                    question_sum_p_all = question_sum_p_all + pointtmp * 10;
+                }
+            }
+            $("#exampaper-total-point").text(question_sum_p_all / 10);
+        },
+        getType: function getType(input) {
+            var m = (/[\d]+(\.[\d]+)?/).exec(input);
+            if (m) {
+                // Check if there is a decimal place
+                if (m[1]) {
+                    return 'float';
+                } else {
+                    return 'int';
+                }
+            }
+            return 'string';
+        }
+    };
+</script>
+</body>
+</html>

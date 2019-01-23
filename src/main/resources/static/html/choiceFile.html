@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <link href="../img/favicon.ico" rel="shortcut icon">
+    <title>选择文件</title>
+    <script src="../js/plugins/angularJS/angular.min.js"></script>
+    <script src="../js/plugins/angularJS/pagination.js"></script>
+    <script src="../js/base_pagination.js"></script>
+    <script src="../js/service/examFileListService.js"></script>
+    <script src="../js/controller/baseController.js"></script>
+    <script src="../js/controller/examFileListController.js"></script>
+    <link href="../css/plugins/BootStrap/css/bootstrap.min.css" rel=stylesheet>
+    <link href="../js/plugins/angularJS/pagination.css" rel="stylesheet">
+    <!--<link href="../css/font/font-awesome.min.css" rel="stylesheet">-->
+</head>
+<body ng-app="app" ng-controller="examFileListController">
+<div class="container">
+    <h1>文件列表</h1>
+    <br/>
+    <!--这里可以不用form，之所以用form的原因是让button可以点回车-->
+    <form class="form-inline">
+        <input autofocus class="form-control" ng-change="reloadList()" ng-model="fileName" placeholder="搜索文件名"
+               type="text">
+        <button class="btn btn-info" ng-click="reloadList()">搜索</button>
+        <button class="btn btn-danger" onclick="window.history.go(-1);" style="float: right;" type="button">
+            <i class="glyphicon glyphicon-arrow-left"></i> 返回
+        </button>
+    </form>
+    <br/>
+    <!--表格数据-->
+    <table class="table table-responsive table-striped table-hover">
+        <thead>
+        <tr>
+            <th>文件名</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="examFileInfo in fileList">
+            <td>{{examFileInfo.fileName}}</td>
+            <td><a href="{{locationUrl}}#?fileId={{examFileInfo.fileId}}" target="_blank">进入</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <tm-pagination conf="paginationConf"></tm-pagination>
+</div>
+<p class="text-center text-muted" ng-if="fileList.length <= 0">tips:请把Excel文件放到程序目录的“题库”中，然后刷新页面</p>
+</body>
+</html>
