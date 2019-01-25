@@ -1,6 +1,7 @@
 package com.cy.pojo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -10,6 +11,7 @@ import java.io.Serializable;
  * By CY
  * Date 2018/11/29 13:55
  */
+@Data
 public class ExerciseInfo implements Serializable {
 
     @JsonProperty("a")
@@ -20,28 +22,4 @@ public class ExerciseInfo implements Serializable {
 
     @JsonProperty("t")
     private String type;
-
-    public String getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(String answer) {
-        this.answer = answer;
-    }
-
-    public String getQuestionId() {
-        return questionId;
-    }
-
-    public void setQuestionId(String questionId) {
-        this.questionId = questionId;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 }

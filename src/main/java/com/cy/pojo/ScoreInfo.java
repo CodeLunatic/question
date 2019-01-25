@@ -2,10 +2,11 @@ package com.cy.pojo;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.metadata.BaseRowModel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Objects;
 
 /**
  * 分数列表实体类
@@ -13,6 +14,8 @@ import java.util.Objects;
  * By CY
  * Date 2018/11/29 17:04
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class ScoreInfo extends BaseRowModel implements Serializable {
 
     // 分数的Id
@@ -28,61 +31,4 @@ public class ScoreInfo extends BaseRowModel implements Serializable {
     private Date date;
     // 文件的Id
     private String fileId;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getScore() {
-        return score;
-    }
-
-    public void setScore(String score) {
-        this.score = score;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public String getFileId() {
-        return fileId;
-    }
-
-    public void setFileId(String fileId) {
-        this.fileId = fileId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ScoreInfo scoreInfo = (ScoreInfo) o;
-        return Objects.equals(id, scoreInfo.id) &&
-                Objects.equals(fileName, scoreInfo.fileName) &&
-                Objects.equals(score, scoreInfo.score) &&
-                Objects.equals(date, scoreInfo.date) &&
-                Objects.equals(fileId, scoreInfo.fileId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, fileName, score, date, fileId);
-    }
 }

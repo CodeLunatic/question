@@ -1,6 +1,7 @@
 package com.cy.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -12,6 +13,8 @@ import java.io.Serializable;
  * By CY
  * Date 2018/11/27 13:17
  */
+
+@Data
 public class ExamFileInfo implements Serializable {
 
     // 文件随机生成的Id，以后还会根据这个Id找到这个文件的
@@ -21,28 +24,4 @@ public class ExamFileInfo implements Serializable {
     // 文件的全路径，用来链接这个文件
     @JsonIgnore // 这个属性不让前台看到
     private String realPath;
-
-    public String getFileId() {
-        return fileId;
-    }
-
-    public void setFileId(String fileId) {
-        this.fileId = fileId;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getRealPath() {
-        return realPath;
-    }
-
-    public void setRealPath(String realPath) {
-        this.realPath = realPath;
-    }
 }

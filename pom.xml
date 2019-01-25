@@ -28,6 +28,10 @@
             <artifactId>easyexcel</artifactId>
             <version>1.1.2-beat1</version>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
     </dependencies>
 
     <!--打包后运行插件-->
