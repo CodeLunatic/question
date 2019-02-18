@@ -2,6 +2,9 @@ package com.cy.pojo;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.metadata.BaseRowModel;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -16,19 +19,25 @@ import java.util.Date;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ApiModel(description = "用户一条的分数信息")
+@JsonIgnoreProperties(value = "cellStyleMap")
 public class ScoreInfo extends BaseRowModel implements Serializable {
 
-    // 分数的Id
+    @ApiModelProperty(value = "分数的Id", name = "id", required = true, example = "6e8c6dac9379437b8890f0a658fe8292")
     private String id;
-    // 试卷的名称
+
     @ExcelProperty(value = "试卷名称", index = 0)
+    @ApiModelProperty(value = "试卷的名称", name = "fileName", required = true, example = "CoreJava-01")
     private String fileName;
-    // 试卷的分数
+
     @ExcelProperty(value = "试卷分数", index = 1)
+    @ApiModelProperty(value = "试卷的分数", name = "score", required = true, example = "100")
     private String score;
-    // 提交的日期
+
     @ExcelProperty(value = "提交时间", index = 2, format = "yyyy年MM月dd日 HH点mm分ss秒")
+    @ApiModelProperty(value = "提交的日期", name = "date", required = true, example = "2018年12月12日 12点12分12秒")
     private Date date;
-    // 文件的Id
+
+    @ApiModelProperty(value = "文件的Id", name = "fileId", required = true, example = "6e8c6dac9379437b8890f0a658fe8292")
     private String fileId;
 }

@@ -1,5 +1,8 @@
 package entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 /**
@@ -8,13 +11,17 @@ import java.util.List;
  * By CY
  * Date 2018/11/27 14:00
  */
+@ApiModel(description = "查询出来的试卷的实体类")
 public class ExamPaperResult {
 
-    private boolean exist; //文件是否存在
+    @ApiModelProperty(value = "文件是否存在", name = "exist", required = true, example = "true")
+    private boolean exist;
 
-    private List examPaperList; // 解析后的每道题目
+    @ApiModelProperty(value = "解析后的每道题目", name = "examPaperList", required = true)
+    private List examPaperList;
 
-    private String message; // 页面中的提示信息
+    @ApiModelProperty(value = "页面中的提示信息", name = "message", required = true, example = "查询成功")
+    private String message;
 
     public ExamPaperResult(boolean exist, List examPaperList, String message) {
         this.exist = exist;

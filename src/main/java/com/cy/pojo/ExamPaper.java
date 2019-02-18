@@ -3,6 +3,8 @@ package com.cy.pojo;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.metadata.BaseRowModel;
 import com.fasterxml.jackson.annotation.JsonFilter;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -18,47 +20,62 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @JsonFilter("exercisePaperFilter")
+@ApiModel(description = "一道题目")
 public class ExamPaper extends BaseRowModel implements Serializable {
-    // 题目的Id，批卷使用
+    @ApiModelProperty(value = "题目的Id，批卷使用", name = "questionId", required = true, example = "6e8c6dac9379437b8890f0a658fe8292")
     private String questionId;
-    // 知识点
+
     @ExcelProperty(index = 0)
+    @ApiModelProperty(value = "知识点", name = "knowledgePoint", example = "来源于教学大纲")
     private String knowledgePoint;
-    // 试题类型
+
     @ExcelProperty(index = 1)
+    @ApiModelProperty(value = "试题类型", name = "type", required = true, example = "单选题")
     private String type;
-    // 题目
+
     @ExcelProperty(index = 2)
+    @ApiModelProperty(value = "题目", name = "question", required = true, example = "下面选项中正确的是?")
     private String question;
-    // 选项A
+
     @ExcelProperty(index = 3)
+    @ApiModelProperty(value = "选项A", name = "optionA", example = "A.选项A")
     private String optionA;
-    // 选项B
+
     @ExcelProperty(index = 4)
+    @ApiModelProperty(value = "选项B", name = "optionB", example = "B.选项B")
     private String optionB;
-    // 选项C
+
     @ExcelProperty(index = 5)
+    @ApiModelProperty(value = "选项C", name = "optionC", example = "C.选项C")
     private String optionC;
-    // 选项D
+
     @ExcelProperty(index = 6)
+    @ApiModelProperty(value = "选项D", name = "optionD", example = "D.选项D")
     private String optionD;
-    // 选项E
+
     @ExcelProperty(index = 7)
+    @ApiModelProperty(value = "选项E", name = "optionE", example = "E.选项E")
     private String optionE;
-    // 选项F
+
     @ExcelProperty(index = 8)
+    @ApiModelProperty(value = "选项F", name = "optionF", example = "F.选项F")
     private String optionF;
-    // 答案
+
     @ExcelProperty(index = 9)
+    @ApiModelProperty(value = "答案", name = "answer", required = true, example = "C")
     private String answer;
-    // 试题解析
+
     @ExcelProperty(index = 10)
+    @ApiModelProperty(value = "试题解析", name = "explain", example = "改题目考察了XXXXXX")
     private String explain;
-    // 出题人
+
     @ExcelProperty(index = 11)
+    @ApiModelProperty(value = "出题人", name = "topicMaker", example = "张三")
     private String topicMaker;
-    // 我的答案
+
+    @ApiModelProperty(value = "我的答案", name = "myAnswer", example = "A")
     private String myAnswer;
-    // 题目来源
+
+    @ApiModelProperty(value = "题目来源", name = "from", example = "D:/CoreJava/CoreJava-01.xlsx")
     private String from;
 }

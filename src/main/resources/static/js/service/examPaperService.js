@@ -7,12 +7,12 @@ app.service("examPaperService", function ($http) {
 
     // 根据分数的Id来获取对应的错题
     this.getWrongTopicByScoreId = function (scoreId) {
-        return $http.get("../examPaper/getWrongTopicByScoreId?scoreId=" + scoreId);
+        return $http.get("../wrongTopic/getWrongTopicByScoreId?scoreId=" + scoreId);
     };
 
     // 获取用户的所有的错题
     this.getAllWrongTopic = function () {
-        return $http.get("../examPaper/getAllWrongTopic");
+        return $http.get("../wrongTopic/findAll");
     };
 
     // 根据Id删除错题

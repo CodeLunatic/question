@@ -1,5 +1,8 @@
 package entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 /**
@@ -8,10 +11,13 @@ import java.util.List;
  * By CY
  * Date 2018/11/28 19:40
  */
+@ApiModel(description = "分页的结果")
 public class PageResult {
 
+    @ApiModelProperty(value = "查询出来的结果数量", name = "total", required = true, example = "100")
     private long total;
 
+    @ApiModelProperty(value = "查询出来的结果列表", name = "rows", required = true)
     private List rows;
 
     public PageResult(long total, List rows) {

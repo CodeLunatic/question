@@ -6,9 +6,11 @@ import com.cy.service.IExamPaperService;
 import com.cy.utils.JacksonUtil;
 import entity.ExamPaperResult;
 import entity.Result;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +25,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "examPaper")
+@Api(tags = "试卷操作", description = "一份试卷的展示和批卷操作")
 public class ExamPaperController {
 
     @Resource
@@ -30,6 +33,7 @@ public class ExamPaperController {
 
     @Resource
     private HttpServletRequest request;
+
     @Resource
     private ICheckAnswerService checkAnswerService;
 
@@ -39,8 +43,13 @@ public class ExamPaperController {
      *
      * @return 试卷的JSON串
      */
-    @RequestMapping("findAll")
-    public ExamPaperResult findAll(String fileId, String whatToDo) {
+    @RequestMapping(value = "findAll", method = RequestMethod.GET)
+    @ApiOperation("根据文件的Id查找所有的题目")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(value = "文件的Id", name = "fileId", dataType = "string", required = true),
+            @ApiImplicitParam(value = "用户要做什么，可选值为 lookAtQuestion 和 doExercise (默认)", name = "whatToDo", dataType = "string")
+    })
+    public ExamPaperResult findAll(@RequestParam(value = "fileId") String fileId, String whatToDo) {
         try {
             /*
                 动态过滤属性，在不同的页面上显示不同的属性
@@ -82,7 +91,12 @@ public class ExamPaperController {
      * @param fileId        试卷的Id
      * @return 返回批卷结果
      */
-    @RequestMapping("checkAnswer")
+    @RequestMapping(value = "checkAnswer", method = RequestMethod.POST)
+    @ApiOperation("批卷方法")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(value = "用户的答案列表", name = "exerciseInfos", dataType = "list", required = true),
+            @ApiImplicitParam(value = "文件的Id", name = "fileId", dataType = "string", required = true)
+    })
     public Result checkAnswer(@RequestBody List<ExerciseInfo> exerciseInfos, String fileId) {
         if (fileId == null || "".equals(fileId) || fileId.length() != 32)
             return new Result(false, "参数传递错误，无法进行批卷，请检查");
@@ -92,40 +106,5 @@ public class ExamPaperController {
         } catch (Exception e) {
             return new Result(false, e.getMessage());
         }
-    }
-
-    /**
-     * 根据分数的Id获取分数所对应的错题
-     *
-     * @param scoreId 分数的Id
-     * @return 分数Id所对应的错题列表
-     */
-    @RequestMapping("getWrongTopicByScoreId")
-    public ExamPaperResult getWrongTopicByScoreId(String scoreId) {
-        if (scoreId == null || "".equalsIgnoreCase(scoreId) || scoreId.length() != 32)
-            return new ExamPaperResult(false, null, "参数传递错误，无法获取错题列表");
-        // 动态过滤属性，在不同的页面上显示不同的属性
-        JacksonUtil jacksonUtil = dynamicFilterField("lookAtQuestion");
-        // 获取过滤后的JSON字符串
-        String wrongTopicJSON = jacksonUtil.readAsString(examPaperService.getOnceWrongTopicList(scoreId));
-        // 查询到的制定错题
-        return new ExamPaperResult(true, jacksonUtil.json2List(wrongTopicJSON), "获取指定错题成功");
-    }
-
-
-    /**
-     * 获取用户的错题本
-     *
-     * @return 用户的错题本
-     */
-    @RequestMapping("getAllWrongTopic")
-    public ExamPaperResult getAllWrongTopic() {
-        String ip = request.getRemoteAddr();
-        // 动态过滤属性，在不同的页面上显示不同的属性
-        JacksonUtil jacksonUtil = dynamicFilterField("lookAtQuestion");
-        // 获取过滤后的JSON字符串
-        String wrongTopicJSON = jacksonUtil.readAsString(examPaperService.getWrongTopicList(ip));
-        // 查询到的错题列表
-        return new ExamPaperResult(true, jacksonUtil.json2List(wrongTopicJSON), "获取错题本成功");
     }
 }

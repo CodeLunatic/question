@@ -3,7 +3,13 @@ package com.cy.controller;
 import com.cy.service.IScoreListService;
 import entity.PageResult;
 import entity.Result;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -21,7 +27,8 @@ import java.util.Date;
  * Date 2018/11/30 0:36
  */
 @RestController
-@RequestMapping(value = "scoreList")
+@RequestMapping(value = "scoreList", method = RequestMethod.GET)
+@Api(tags = "分数列表", description = "分数列表的操作")
 public class ScoreListController {
 
     @Resource
@@ -40,7 +47,13 @@ public class ScoreListController {
      * @return 分数列表分页的结果实体类
      */
     @RequestMapping("findPage")
-    public PageResult findPage(Date date, int page, int size) {
+    @ApiOperation("查询所有的分数列表")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(value = "查询的日期", name = "date", dataType = "date"),
+            @ApiImplicitParam(value = "当前页", name = "page", dataType = "integer", defaultValue = "1"),
+            @ApiImplicitParam(value = "每页的条目数", name = "size", dataType = "integer", defaultValue = "10")
+    })
+    public PageResult findPage(Date date, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size) {
         return scoreListService.findPage(date, page, size, request.getRemoteAddr());
     }
 
@@ -51,6 +64,7 @@ public class ScoreListController {
      * @return 清空的状态
      */
     @RequestMapping("deleteAll")
+    @ApiOperation("清空分数列表")
     public Result deleteAll() {
         boolean b = scoreListService.deleteAll(request.getRemoteAddr());
         if (b) return new Result(true, "数据已清空!");
@@ -65,6 +79,10 @@ public class ScoreListController {
      * @return 返回操作的结果
      */
     @RequestMapping("delete")
+    @ApiOperation("删除单条分数信息")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(value = "分数的Id", name = "id", dataType = "string")
+    })
     public Result delete(String id) {
         String ip = request.getRemoteAddr();
         boolean delete = scoreListService.delete(id, ip);
@@ -79,6 +97,7 @@ public class ScoreListController {
      * @throws IOException 如果操作失败
      */
     @RequestMapping("exportExcel")
+    @ApiOperation("导出到Excel文件中")
     public void exportExcel(HttpServletResponse response) throws IOException {
         String fileName = new String("分数信息.xlsx".getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
         response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
