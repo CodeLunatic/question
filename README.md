@@ -1,5 +1,12 @@
 # 刷题吧
 
+<p align="center">
+
+[![CodeLunatic](https://travis-ci.com/CodeLunatic/question.svg?branch=master)](https://travis-ci.com/CodeLunatic/question)
+[![CodeLunatic](https://img.shields.io/badge/blog-%40CY-blue.svg)](http://cyblogs.top)
+
+</p>
+
 **刷题吧个人版**为之前`在线版本`的`桌面版本`
 
 `在线版本`由于`访问压力`和`打理题库`的问题，所以`在线版本`进行下线处理
