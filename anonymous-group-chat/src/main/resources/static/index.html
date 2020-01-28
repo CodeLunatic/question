@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="js/jquery-3.3.1.min.js"></script>
+<link href="css/animate.css" rel="stylesheet">
+<link href="css/chat.css" rel="stylesheet">
+<head>
+    <meta charset="UTF-8">
+    <title>群聊</title>
+</head>
+<body bgcolor="#222222" style="font-family: Consolas;">
+<!--聊天容器-->
+<div id="chat-container">
+    <!--头部提示信息-->
+    <div id="header">刷题吧匿名聊天</div>
+    <!--消息面板-->
+    <div id="message"></div>
+    <!--消息控制-->
+    <div id="chat-control">
+        <!--输入框-->
+        <input id="messageContent" placeholder="你的聊天不会被记录，你可以畅所欲言" style="font-family: Consolas;" type="text"/>
+        <!--发送按钮-->
+        <span id="send">发送</span>
+    </div>
+</div>
+</body>
+<script src="js/utils/cookie.js"></script>
+<script src="js/index/chat.js"></script>
+<script>
+    /* 禁用右键菜单 */
+    document.oncontextmenu = function () {
+        return false;
+    };
+</script>
+</html>
